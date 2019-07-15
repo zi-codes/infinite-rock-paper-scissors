@@ -4,9 +4,27 @@ require_relative '../lib/game'
 class RpsWeb < Sinatra::Base
   before do
     @game = Game.instance
+    @rules = Rules.instance
   end
 
   get '/' do
+    erb(:pre_index)
+  end
+
+  post '/generate_rules_instance' do
+    choices = params[:weapons]
+    length = choices.split(",").length
+    redirect '/error' if length < 3
+    redirect '/error' if length % 2 == 0
+    @rules = Rules.create(choices)
+    redirect '/index'
+  end
+
+  get '/error' do
+    erb(:error)
+  end
+
+  get '/index' do
     erb(:index)
   end
 
@@ -26,6 +44,7 @@ class RpsWeb < Sinatra::Base
   get '/play_pvp' do
     @player1_name = @game.player_1.name
     @player2_name = @game.player_2.name
+    @choices = @rules.choices
     erb(:play_pvp)
   end
 
@@ -37,6 +56,7 @@ class RpsWeb < Sinatra::Base
 
   get '/play_pvp_2' do
     @player2_name = @game.player_2.name
+    @choices = @rules.choices
     erb(:play_pvp_2)
   end
 
@@ -60,6 +80,7 @@ class RpsWeb < Sinatra::Base
 
   get '/play_cpu' do
     @player1_name = @game.player_1.name
+    @choices = @rules.choices
     erb(:play_cpu)
   end
 
@@ -68,6 +89,8 @@ class RpsWeb < Sinatra::Base
     @game.player_1.equip(p1_choice)
     redirect '/result'
   end
+
+  ### PATHS CONVERGE HERE
 
   get '/result' do
     @player1_name = @game.player_1.name

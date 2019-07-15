@@ -5,7 +5,7 @@ class Computer
 
   attr_reader :weapon, :name
 
-  def initialize(rules_instance = Rules.new)
+  def initialize(rules_instance = Rules.instance)
     @rules = rules_instance
     @name = "Computer"
     @weapon = generate_weapon
@@ -15,14 +15,14 @@ class Computer
     weapon_array.sample
   end
 
-  def weapon_array
+  def weapon_array(weapon_class=Weapon)
     @rules.choices.map { |choice|
-      Weapon.new(choice)
+      weapon_class.new(choice)
     }
   end
 end
 
-# 
+#
 #
 # 20.times do
 #   computer = Computer.new
