@@ -1,5 +1,11 @@
 
+<div>
+  <p>These are the rules you have created: </p>
+  <% @hierarchy.each do |key, value| %>
+  <p> <%= key %> beats <%= value.join(", ")%> </p>
+  <% end %>
 
+</div>
 
 <h2>Choose your game mode</h2>
 

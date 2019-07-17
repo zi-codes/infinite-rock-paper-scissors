@@ -11,29 +11,48 @@ class Rules
   ## if more than 3 items each item beats the next n-1/2 items
   ## where n is the total number of items
   def initialize(choices = CHOICES)
-    @choices = choices.select { |choice| choice!="" }.map(&:strip).map(&:to_sym)
+    @choices = choices
+     .reject(&:empty?)
+     .map(&:strip)
+     .map(&:to_sym)
+
     @hierarchy = {}
     make_hierarchy
   end
 
-  def vs_total
-    @choices.length/2
+  def choice_total
+    @choices.length
   end
 
+  def vs_total
+    choice_total/2
+  end
+
+  ## %array.length
+
   def make_hierarchy
-    array = @choices
-    length = array.length
-    length.times do
-      c = 1
+
+    @choices.each_with_index do |choice, index|
       vs_array = []
       vs_total.times do
-        vs_array << array[c]
-        c+=1
+        vs_array << @choices[(index + 1) % choice_total]
+        index += 1
       end
-      @hierarchy[array[0]] = vs_array
-      removed = array.shift
-      array.push(removed)
+      @hierarchy[choice] = vs_array
     end
+    # array = @choices
+    # length = array.length
+    # length.times do
+    #   c = 1
+    #   vs_array = []
+    #   vs_total.times do
+    #     vs_array << array[c]
+    #     c+=1
+    #   end
+    #   @hierarchy[array[0]] = vs_array
+    #   removed = array.shift
+    #   array.push(removed)
+    # end
   end
 
   def self.create(choices)
@@ -45,3 +64,8 @@ class Rules
   end
 
 end
+
+# rules = Rules.new(["a","b","c","d","e","f","g"])
+#
+# p rules.choices
+# p rules.hierarchy

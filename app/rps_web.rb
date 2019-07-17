@@ -13,18 +13,12 @@ class RpsWeb < Sinatra::Base
 
   post '/generate_rules_instance' do
     choices = params[:weapons]
-    length = choices.length
-    redirect '/error' if length < 3
-    redirect '/error' if length % 2 == 0
     @rules = Rules.create(choices)
     redirect '/index'
   end
 
-  get '/error' do
-    erb(:error)
-  end
-
   get '/index' do
+    @hierarchy = @rules.hierarchy
     erb(:index)
   end
 
