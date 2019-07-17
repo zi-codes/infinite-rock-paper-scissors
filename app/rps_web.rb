@@ -13,7 +13,7 @@ class RpsWeb < Sinatra::Base
 
   post '/generate_rules_instance' do
     choices = params[:weapons]
-    length = choices.split(",").length
+    length = choices.length
     redirect '/error' if length < 3
     redirect '/error' if length % 2 == 0
     @rules = Rules.create(choices)

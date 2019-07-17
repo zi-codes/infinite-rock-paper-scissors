@@ -2,14 +2,16 @@ require_relative 'weapon'
 
 class Rules
 
-  CHOICES = "rock, scissors, paper"
+  CHOICES = ["rock", "scissors", "paper"]
 
   attr_reader :hierarchy, :choices
 
-  ## initializes using a string of choices separated by a comma
-  ## first beats second, etc, last choice beats first choice
+  ## initializes using an array of choices
+  ## first beats second, etc, last choice beats first choice if 3 items
+  ## if more than 3 items each item beats the next n-1/2 items
+  ## where n is the total number of items
   def initialize(choices = CHOICES)
-    @choices = choices.split(",").map(&:strip).map(&:to_sym)
+    @choices = choices.select { |choice| choice!="" }.map(&:strip).map(&:to_sym)
     @hierarchy = {}
     make_hierarchy
   end
@@ -43,7 +45,3 @@ class Rules
   end
 
 end
-
-rules = Rules.new("a,b,c,d,e,f,g")
-
-p rules.hierarchy
