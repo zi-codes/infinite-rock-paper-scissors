@@ -1,4 +1,4 @@
-# Infinite Rock-Paper-Scissors < Codex Z
+# Infinite Rock-Paper-Scissors
 
 ![Image screenshot](/screenshot.png)
 
@@ -6,7 +6,7 @@ Originally built for Makers (bootcamp) weekend challenge. This web app extends t
 
 ## Run it yourself
 
-#### Mac
+#### MacOS
 Prerequisites:
 - Ruby
 - Bundler
